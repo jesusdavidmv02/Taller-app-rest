@@ -1,4 +1,4 @@
-export class usuario {
+export class Vehiculo {
 
     id: number | undefined ; 
     marca : string | undefined;
