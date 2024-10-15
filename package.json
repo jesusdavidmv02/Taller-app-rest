@@ -1,9 +1,31 @@
 {
   "dependencies": {
     "express": "^4.21.1",
-    "mysql2": "^3.11.3"
+    "mysql2": "^3.11.3",
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.0"
-  }
+  },
+  "name": "taller-app-rest",
+  "version": "1.0.0",
+  "description": "taller de betek",
+  "main": "index.js",
+  "scripts": {
+    "main": " ts-node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusdavidmv02/Taller-app-rest.git"
+  },
+  "keywords": [
+    "js"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesusdavidmv02/Taller-app-rest/issues"
+  },
+  "homepage": "https://github.com/jesusdavidmv02/Taller-app-rest#readme"
 }
