@@ -8,10 +8,10 @@ export class reservaRepository {
 
         const connection: Pool = getPoolConnection();
         const querySql = `INSERT INTO reservas (id,usuario_id, vehiculo_id, fecha_reserva) VALUES (?,?,?,?)`;
-        const values = [reserva.id, reserva.usuario_id, reserva.vehiculo_id , reserva.fechaReserva ];
+        const values  = [reserva.id, reserva.usuario_id, reserva.vehiculo_id , reserva.fecha_Reserva ];
     
-        const result = await connection.query(querySql, values);
-        return result;
+        const result : [ResultSetHeader, FieldPacket[]] = await connection.query(querySql, values);
+        return result[0];
     }
 
     async obtenerReservas(){
@@ -21,7 +21,7 @@ export class reservaRepository {
         return result;
     }
 
-    async obtenerReserva(idReserva: number): Promise<RowDataPacket[]> {
+    async obtenerReservaUno(idReserva: number): Promise<RowDataPacket[]> {
         const connection = getPoolConnection();
         const querySql = `SELECT * FROM reservas WHERE id = ?`;
         const values = [idReserva];
@@ -35,7 +35,7 @@ export class reservaRepository {
         const values = [ reserva.id,
             reserva.usuario_id,
             reserva.vehiculo_id,
-            reserva.fechaReserva
+            reserva.fecha_Reserva
         ];
         const result = await connection.query<ResultSetHeader>(querySql, values);
         return result[0];

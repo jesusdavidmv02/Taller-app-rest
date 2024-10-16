@@ -7,8 +7,11 @@ export class UsuarioRepository {
     async agregarUsuario (usuario: Usuario ){
 
         const connection: Pool = getPoolConnection();
-        const querySql = `INSERT INTO usuario (id, nombre , email , telefono) VALUES (?,?,?,?)`;
-        const values : Array<string | number | undefined> = [usuario.id, usuario.nombre, usuario.email , usuario.telefono ];    
+        const querySql = `INSERT INTO usuarios (id, nombre , email , telefono) VALUES (?,?,?,?)`;
+
+        const values : Array<string | number | undefined> = [usuario.id, usuario.nombre, usuario.email , usuario.telefono ]; 
+        
+           
         const result : [ResultSetHeader, FieldPacket[]]  = await connection.query(querySql, values);
         return result[0];
 
@@ -16,14 +19,14 @@ export class UsuarioRepository {
 
     async obtenerUsusarios(){
         const connection = getPoolConnection();
-        const querySql = `SELECT * FROM reservas`;
+        const querySql = `SELECT * FROM usuarios`;
         const result = await connection.query(querySql);
-        return result;
+        return result[0];
     }
     
     async obtenerUsarioUno(idUsuario: number): Promise<RowDataPacket[]> {
         const connection = getPoolConnection();
-        const querySql = `SELECT * FROM usuario WHERE id = ?`;
+        const querySql = `SELECT * FROM usuarios WHERE id = ?`;
         const values = [idUsuario];
         const queryResult = await connection.query<RowDataPacket[]>(querySql, values);
         return queryResult[0];
@@ -31,7 +34,7 @@ export class UsuarioRepository {
     
     async modificarUsuario(usuario: Usuario) {
         const connection = getPoolConnection();
-        const querySql = `UPDATE usuario SET nombre = ?, email = ?, telefono = ? WHERE id = ?`;
+        const querySql = `UPDATE usuarios SET nombre = ?, email = ?, telefono = ? WHERE id = ?`;
         const values = [ usuario.id,
             usuario.nombre,
             usuario.email,
@@ -43,7 +46,7 @@ export class UsuarioRepository {
 
     async eliminarUsuario(idUsuario: number): Promise<ResultSetHeader> {
         const connection = getPoolConnection();
-        const querySql = `DELETE FROM usuario WHERE id = ?`;
+        const querySql = `DELETE FROM usuarios WHERE id = ?`;
         const values = [idUsuario];
         const result: [ResultSetHeader, FieldPacket[]] = await connection.query(querySql, values);
         return result[0];

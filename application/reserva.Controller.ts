@@ -1,18 +1,20 @@
 import { ResultSetHeader } from "mysql2";
-import { Usuario } from "../Model/usuario.Controller";
-import { UsuarioRepository } from "../repositori/usuario.Repositori";
+import { reservaRepository } from "../repositori/reserva.Repositori";
+import { Reserva } from "../Model/reserva.Model";
 
-export class usuarioController {
-  private repository: UsuarioRepository;
+export class reservaController {
+
+  private repository: reservaRepository;
 
   constructor() {
-    this.repository = new UsuarioRepository();
+    this.repository = new reservaRepository();
   }
 
-  async agregar(payload: { id: number; nombre: string; email: string; telefono: string }) {
+  async agregar(payload: { id: number; usuario_id : number;  vehiculo_id :number ; fecha_reserva : Date }) {
     try {
-      const usuario = new Usuario({ id: payload.id, nombre: payload.nombre, email: payload.email, telefono: payload.telefono });
-      const result = await this.repository.agregarUsuario(usuario);
+
+      const reserva = new Reserva({ id: payload.id, usuario_id: payload.usuario_id,  vehiculo_id : payload.vehiculo_id , fecha_Reserva : payload.fecha_reserva});
+      const result = await this.repository.agregarReserva(reserva);
 
       if (result.affectedRows == 1) {
         console.log(`Categoría agregada con el id: ${result.insertId}`);
@@ -29,8 +31,8 @@ export class usuarioController {
 
   async obtener() {
     try {
-      const resultado = await this.repository.obtenerUsusarios();
-      console.log("Usuarios");
+      const resultado = await this.repository.obtenerReservas();
+      console.log("Reservas");
       console.log(resultado);
       return resultado;
     } catch (error) {
@@ -39,12 +41,17 @@ export class usuarioController {
     }
   }
 
-
-
-  async actualizar(payload: { id: number; nombre: string; email: string; telefono: string }) {
+  async actualizar(payload: { id: number; usuario_id: number ; vehiculo_id: number; fecha_Reserva: Date }) {
     try {
-      const usuario = new Usuario({ id: payload.id, nombre: payload.nombre, email: payload.email, telefono: payload.telefono });
-      const resultado = await this.repository.modificarUsuario(usuario);
+
+      const reserva = new Reserva({
+         id: payload.id,
+         usuario_id: payload.usuario_id, 
+         vehiculo_id: payload.vehiculo_id,
+         fecha_Reserva: payload.fecha_Reserva 
+        });
+
+      const resultado = await this.repository.modificarReserva(reserva);
       if (resultado.affectedRows === 1) {
         console.log("Usuario actualizado");
       } else {
@@ -59,12 +66,12 @@ export class usuarioController {
 
   async obtenerPorId(id: number) {
     try {
-      const resultado = await this.repository.obtenerUsarioUno(id);
+      const resultado = await this.repository.obtenerReservaUno(id);
       if (resultado.length == 1) {
-        console.log("Categoría consultada");
+        console.log("Reserva consultada");
         console.log(resultado[0]);
       } else {
-        console.log("No se encontro la categoría");
+        console.log("No se encontro la Reserva");
       }
       return resultado;
     } catch (error) {
@@ -75,11 +82,11 @@ export class usuarioController {
 
   
   eliminar(id: number) {
-    this.repository.eliminarUsuario(id).then((resultado: ResultSetHeader) => {
+    this.repository.eliminarReserva(id).then((resultado: ResultSetHeader) => {
         if (resultado.affectedRows == 1) {
-          console.log(`Usuario eliminado correctamente`);
+          console.log(`la Reserva eliminado correctamente`);
         } else {
-          console.log("No se pudo eliminar el usuario");
+          console.log("No se pudo eliminar el Reserva");
         }
       }).catch((error) => {
         console.log("Ha ocurrido un error eliminando.");

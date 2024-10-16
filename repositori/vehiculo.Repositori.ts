@@ -6,22 +6,22 @@ export class VehiculoRepository {
     
     async agregarVehiculo (vehiculo: Vehiculo ){
         const connection: Pool = getPoolConnection();
-        const querySql = `INSERT INTO vehiculo (id, marca , modelo , anio) VALUES (?,?,?,?)`;
+        const querySql = `INSERT INTO vehiculos (id, marca , modelo , anio) VALUES (?,?,?,?)`;
         const values = [vehiculo.id, vehiculo.marca, vehiculo.modelo ,vehiculo.anio];
-        const result = await connection.query(querySql, values);
-        return result;
+        const result :  [ResultSetHeader, FieldPacket[]] = await connection.query(querySql, values);
+        return result[0];
     }
 
     async obtenervehiculo(){
         const connection = getPoolConnection();
-        const querySql = `SELECT * FROM vehiculo`;
+        const querySql = `SELECT * FROM vehiculos`;
         const result = await connection.query(querySql);
-        return result;
+        return result[0];
     }
     
-    async obtenerUsario(idVehiculo: number): Promise<RowDataPacket[]> {
+    async obtenerVehiculoUno(idVehiculo: number): Promise<RowDataPacket[]> {
         const connection = getPoolConnection();
-        const querySql = `SELECT * FROM vehiculo WHERE id = ?`;
+        const querySql = `SELECT * FROM vehiculos WHERE id = ?`;
         const values = [idVehiculo];
         const queryResult = await connection.query<RowDataPacket[]>(querySql, values);
         return queryResult[0];
@@ -29,7 +29,7 @@ export class VehiculoRepository {
     
     async modificarVehiculo(vehiculo: Vehiculo) {
         const connection = getPoolConnection();
-        const querySql = `UPDATE vehiculo SET marca = ?, modelo = ?, anio = ? WHERE id = ?`;
+        const querySql = `UPDATE vehiculos SET marca = ?, modelo = ?, anio = ? WHERE id = ?`;
         const values = [ vehiculo.id , vehiculo.marca ,  vehiculo.modelo, vehiculo.anio ];
         const result = await connection.query<ResultSetHeader>(querySql, values);
         return result[0];
@@ -37,7 +37,7 @@ export class VehiculoRepository {
 
     async eliminarVehiculo(idVehiculo: number): Promise<ResultSetHeader> {
         const connection = getPoolConnection();
-        const querySql = `DELETE FROM vehiculo WHERE id = ?`;
+        const querySql = `DELETE FROM vehiculos WHERE id = ?`;
         const values = [idVehiculo];
         const result: [ResultSetHeader, FieldPacket[]] = await connection.query(querySql, values);
         return result[0];
