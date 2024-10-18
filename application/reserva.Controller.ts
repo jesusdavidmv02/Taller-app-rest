@@ -16,10 +16,10 @@ export class reservaController {
       const reserva = new Reserva({ id: payload.id, usuario_id: payload.usuario_id,  vehiculo_id : payload.vehiculo_id , fecha_Reserva : payload.fecha_reserva});
       const result = await this.repository.agregarReserva(reserva);
 
-      if (result.affectedRows == 1) {
-        console.log(`Categoría agregada con el id: ${result.insertId}`);
+      if (result.ok == true) {
+        console.log(`reserva echa`);
       } else {
-        console.log("La categoría no se agrego");
+        console.log("error");
       }
       return result;
     } catch (error: any) {

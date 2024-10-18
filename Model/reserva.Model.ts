@@ -1,8 +1,8 @@
 export class Reserva {
 
     id: number | undefined ; 
-    usuario_id : number | undefined;
-    vehiculo_id :number | undefined;
+    usuario_id : number = 0
+    vehiculo_id :number = 0
     fecha_Reserva : Date | undefined;
 
      constructor(infoReserva : { id: number, usuario_id : number, vehiculo_id :number, fecha_Reserva : Date}){

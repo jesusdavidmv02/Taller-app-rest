@@ -15,7 +15,6 @@ export const RoutesVehiculo = () => {
                 message: "Error consutado vehiculo",
             });
         });
-
     });
 
     router.post("/vehiculo", (req, res) => {

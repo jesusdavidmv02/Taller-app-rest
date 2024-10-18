@@ -6,11 +6,39 @@ export class reservaRepository {
     
     async agregarReserva (reserva: Reserva ){
         const connection: Pool = getPoolConnection();
-        const querySql = `INSERT INTO reservas (id,usuario_id, vehiculo_id, fecha_reserva) VALUES (?,?,?,?)`;
-        const values  = [reserva.id, reserva.usuario_id, reserva.vehiculo_id , reserva.fecha_Reserva ];
-        const result : [ResultSetHeader, FieldPacket[]] = await connection.query(querySql, values);
-        return result[0];
+
+
+        const resulUser =  await this.validarUser(reserva.usuario_id);
+        const resulVehiculo = await this.validarVehiculo(reserva.usuario_id);
+
+        if (resulUser && resulVehiculo ) {
+            const querySql = `INSERT INTO reservas (id,usuario_id, vehiculo_id, fecha_reserva) VALUES (?,?,?,?)`;
+            const values  = [reserva.id, reserva.usuario_id, reserva.vehiculo_id , reserva.fecha_Reserva ];
+            const result : [ResultSetHeader, FieldPacket[]] = await connection.query(querySql, values);
+            return {ok : true ,  result :  result[0] };
+            
+        } else {
+            return {  ok :false ,   messaje : "no esta en la base de datos" };
+        }
     }
+
+    async validarUser (usuario_id : number){
+        const connection: Pool = getPoolConnection();
+        const querySql = `select  * from consecionario.usuarios  where  id = ?`;
+        const values  = [usuario_id];
+        const result : [any, FieldPacket[]]  = await connection.query(querySql, values);
+        return result[0].length > 0 ? true : false ;
+    }
+  
+    async validarVehiculo (vehiculo_id : number){
+        const connection: Pool = getPoolConnection();
+        const querySql = `select  * from consecionario.vehiculos   where  id = ?`;
+        const values  = [vehiculo_id];
+        const result : [any, FieldPacket[]] = await connection.query(querySql, values);
+        return result[0].length > 0 ? true : false ;
+    }
+
+
 
     async obtenerReservas(){
         const connection = getPoolConnection();
