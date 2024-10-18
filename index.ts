@@ -1,21 +1,22 @@
-import express, { Express } from "express";  
-import { routes } from "./infraestuture/modules/api rest/routes/routes.index";
+import Express from "express";
+import middleware404 from "./infraestuture/middleware/middleware";
+import { routes } from "./infraestuture/routes/routes.index";
 
-const crearServer = () => {
-    
-    const app = express();  
-    
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-        console.log("Servidor corriendo en el puerto: " + PORT);
-    });
+const createServer = () => {
+  const app = Express(); 
+  app.use(Express.json());
 
-    app.get('/index', (req, res) => {
-        res.send('00000 bien ');
-    });
+  app.get("/api", (req, res) => {
+    res.send({ message: "Bienvenido a la API " });
+  });
 
-    app.use('/api/v1', routes());
+  app.use("/api/v1", routes());
+  app.use(middleware404);
 
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Servidor Api-Rest ejecutando: http://localhost:${PORT}`);
+  });
 };
 
-crearServer();
+createServer();

@@ -5,11 +5,9 @@ import { getPoolConnection } from "../db/Source";
 export class reservaRepository {
     
     async agregarReserva (reserva: Reserva ){
-
         const connection: Pool = getPoolConnection();
         const querySql = `INSERT INTO reservas (id,usuario_id, vehiculo_id, fecha_reserva) VALUES (?,?,?,?)`;
         const values  = [reserva.id, reserva.usuario_id, reserva.vehiculo_id , reserva.fecha_Reserva ];
-    
         const result : [ResultSetHeader, FieldPacket[]] = await connection.query(querySql, values);
         return result[0];
     }

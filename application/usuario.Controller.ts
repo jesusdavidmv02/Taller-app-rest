@@ -13,24 +13,20 @@ export class usuarioController {
     try {
       const usuario = new Usuario({ id: payload.id, nombre: payload.nombre, email: payload.email, telefono: payload.telefono });
       const result = await this.repository.agregarUsuario(usuario);
-
       if (result.affectedRows == 1) {
-        console.log(`Categoría agregada con el id: ${result.insertId}`);
+        return { ok: true, id: result.insertId };
       } else {
-        console.log("La categoría no se agrego");
+        return { ok: false, id: result.insertId };
       }
-      return result;
     } catch (error: any) {
       console.log("Ha ocurrido un error al guardar.", error?.message);
-      return error;
-
+      throw error;
     }
   }
 
   async obtener() {
     try {
       const resultado = await this.repository.obtenerUsusarios();
-      // console.log("Usuarios");
       console.log(resultado);
       return resultado;
     } catch (error) {
@@ -44,14 +40,13 @@ export class usuarioController {
       const usuario = new Usuario({ id: payload.id, nombre: payload.nombre, email: payload.email, telefono: payload.telefono });
       const resultado = await this.repository.modificarUsuario(usuario);
       if (resultado.affectedRows === 1) {
-        console.log("Usuario actualizado");
+          return {ok: true , message : "usuaio actualizado corretamente "}        
       } else {
-        console.log("No se pudo actualizar el usuario");
+        return {ok: false , message : "Error  "}        
       }
-      return resultado;
     } catch (error) {
       console.log("Ha ocurrido un error actualizando");
-      return error;
+      throw error;
     }
   }
 
@@ -71,20 +66,15 @@ export class usuarioController {
     }
   }
 
-  
-  eliminar(id: number) {
-    this.repository.eliminarUsuario(id).then((resultado: ResultSetHeader) => {
-        if (resultado.affectedRows == 1) {
-          console.log(`Usuario eliminado correctamente`);
-        } else {
-          console.log("No se pudo eliminar el usuario");
-        }
-      }).catch((error) => {
-        console.log("Ha ocurrido un error eliminando.");
-        console.log(error);
-      });
-  }
 
+  async eliminar(id: number) {
+    const resultado: ResultSetHeader = await this.repository.eliminarUsuario(id);
+    if (resultado.affectedRows == 1) {
+      return { ok: true, message: "Usuario eliminado" };
+    } else {
+      return { ok: false, message: "No se pudo eliminar el Usuario" };
+    }
+  }
 
 
 }

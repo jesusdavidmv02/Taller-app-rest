@@ -11,23 +11,23 @@ export class vehiculoController {
     this.repository = new VehiculoRepository();
   }
 
-  async agregar(payload: { id: number; marca : string;  modelo :string ; anio : number }) {
+  async agregar(payload: { id: number; marca: string; modelo: string; anio: number }) {
     try {
 
       const vehiculo = new Vehiculo({
-         id: payload.id, 
-          marca: payload.marca,
-          modelo: payload.modelo ,
-         anio : payload.anio}
-        );
+        id: payload.id,
+        marca: payload.marca,
+        modelo: payload.modelo,
+        anio: payload.anio
+      }
+      );
       const result = await this.repository.agregarVehiculo(vehiculo);
 
       if (result.affectedRows == 1) {
-        console.log(` Vehiculo agregada con el id: ${result.insertId}`);
+        return { ok: true, id: result.insertId };
       } else {
-        console.log("La  Vehiculo no se agrego");
+        return { ok: false, id: result.insertId  , messaje: "Error de envio" };
       }
-      return result;
     } catch (error: any) {
       console.log("Ha ocurrido un error al guardar.", error?.message);
       return error;
@@ -47,26 +47,23 @@ export class vehiculoController {
     }
   }
 
-  async actualizar(payload: { id: number; marca: string ; modelo: string; anio: number }) {
+  async actualizar(payload: { id: number; marca: string; modelo: string; anio: number }) {
     try {
-
       const vehiculo = new Vehiculo({
-         id: payload.id,
-         marca: payload.marca, 
-         modelo: payload.modelo,
-         anio: payload.anio 
-        });
-
+        id: payload.id,
+        marca: payload.marca,
+        modelo: payload.modelo,
+        anio: payload.anio
+      });
       const resultado = await this.repository.modificarVehiculo(vehiculo);
       if (resultado.affectedRows === 1) {
-        console.log("Vehiculo actualizado");
+        return { ok: true, message: "usuaio actualizado corretamente " }
       } else {
-        console.log("No se pudo actualizar el Vehiculo");
+        return { ok: false, message: "Error  " }
       }
-      return resultado;
     } catch (error) {
       console.log("Ha ocurrido un error actualizando");
-      return error;
+      throw error;
     }
   }
 
@@ -86,18 +83,14 @@ export class vehiculoController {
     }
   }
 
-  
-  eliminar(id: number) {
-    this.repository.eliminarVehiculo(id).then((resultado: ResultSetHeader) => {
-        if (resultado.affectedRows == 1) {
-          console.log(`la Vehiculo eliminado correctamente`);
-        } else {
-          console.log("No se pudo eliminar el Vehiculo");
-        }
-      }).catch((error) => {
-        console.log("Ha ocurrido un error eliminando.");
-        console.log(error);
-      });
+
+  async eliminar(id: number) {
+    const resultado: ResultSetHeader = await this.repository.eliminarVehiculo(id);
+    if (resultado.affectedRows == 1) {
+      return { ok: true, message: "Usuario eliminado" };
+    } else {
+      return { ok: false, message: "No se pudo eliminar el Usuario" };
+    }
   }
 
 
@@ -107,7 +100,7 @@ export class vehiculoController {
 
 
 
- 
+
 
 
 

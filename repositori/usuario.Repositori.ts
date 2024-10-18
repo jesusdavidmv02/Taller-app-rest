@@ -5,13 +5,9 @@ import { Usuario } from "../Model/usuario.Controller";
 export class UsuarioRepository {
     
     async agregarUsuario (usuario: Usuario ){
-
         const connection: Pool = getPoolConnection();
         const querySql = `INSERT INTO usuarios (id, nombre , email , telefono) VALUES (?,?,?,?)`;
-
-        const values : Array<string | number | undefined> = [usuario.id, usuario.nombre, usuario.email , usuario.telefono ]; 
-        
-           
+        const values = [usuario.id, usuario.nombre, usuario.email , usuario.telefono ]; 
         const result : [ResultSetHeader, FieldPacket[]]  = await connection.query(querySql, values);
         return result[0];
 
@@ -34,11 +30,11 @@ export class UsuarioRepository {
     
     async modificarUsuario(usuario: Usuario) {
         const connection = getPoolConnection();
-        const querySql = `UPDATE usuarios SET nombre = ?, email = ?, telefono = ? WHERE id = ?`;
-        const values = [ usuario.id,
-            usuario.nombre,
+        const querySql = `UPDATE usuarios SET nombre=?, email=?, telefono=? WHERE id= ?` ;
+        const values = [ usuario.nombre,
             usuario.email,
-            usuario.telefono           
+            usuario.telefono , 
+            usuario.id
         ];
         const result = await connection.query<ResultSetHeader>(querySql, values);
         return result[0];
