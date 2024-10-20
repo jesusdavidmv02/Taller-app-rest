@@ -54,10 +54,10 @@ export class usuarioController {
     try {
       const resultado = await this.repository.obtenerUsarioUno(id);
       if (resultado.length == 1) {
-        console.log("Categoría consultada");
+        console.log("Usuarios consultada");
         console.log(resultado[0]);
       } else {
-        console.log("No se encontro la categoría");
+        console.log("No se encontro la Usuario");
       }
       return resultado;
     } catch (error) {
@@ -65,7 +65,6 @@ export class usuarioController {
       return error;
     }
   }
-
 
   async eliminar(id: number) {
     const resultado: ResultSetHeader = await this.repository.eliminarUsuario(id);
@@ -75,7 +74,6 @@ export class usuarioController {
       return { ok: false, message: "No se pudo eliminar el Usuario" };
     }
   }
-
 
 }
 

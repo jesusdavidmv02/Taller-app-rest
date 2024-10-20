@@ -6,7 +6,7 @@ import { usuarioController } from "../../application/usuario.Controller";
 // PATH: es la ruta
 
 export const RoutesUsuario = () => {
-
+  
   const router = Express.Router();
   const usuarioCtrl = new usuarioController();
 
@@ -20,7 +20,6 @@ export const RoutesUsuario = () => {
         });
       });
   });
-
 
   router.post("/usuario", (req, res) => {
     const payload = req.body;
@@ -39,11 +38,10 @@ export const RoutesUsuario = () => {
       const status = result.ok === true ? 200 : 400;
       res.status(status).send(result);
     })
-      .catch((error) => {
+    .catch((error) => {
         res.status(500).send(error);
-      });
+    });
   });
-
 
   router.get("/usuario/:id", async (req, res) => {
     try {
@@ -76,7 +74,18 @@ export const RoutesUsuario = () => {
       const status = result.ok === true ? 200 : 400;
       res.status(status).send(result);
     } catch (error) {
-      res.status(500).send(error);
+
+      if (error instanceof Error && 'errno' in error && 'code' in error) {
+        if (error.errno === 1451 && error.code === 'ER_ROW_IS_REFERENCED_2') {
+          res.status(400).send({
+            ok: false,
+            message: "No se puede eliminar este [ Usuario ] porque tiene reservas asociadas."
+          });
+        }
+      }else{
+        res.status(500).send(error);
+      }
+
     }
   });
 

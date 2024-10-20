@@ -57,7 +57,7 @@ export class vehiculoController {
       });
       const resultado = await this.repository.modificarVehiculo(vehiculo);
       if (resultado.affectedRows === 1) {
-        return { ok: true, message: "usuaio actualizado corretamente " }
+        return { ok: true, message: "Vehiculo actualizado corretamente" }
       } else {
         return { ok: false, message: "Error  " }
       }
@@ -83,13 +83,12 @@ export class vehiculoController {
     }
   }
 
-
   async eliminar(id: number) {
     const resultado: ResultSetHeader = await this.repository.eliminarVehiculo(id);
     if (resultado.affectedRows == 1) {
-      return { ok: true, message: "Usuario eliminado" };
+      return { ok: true, message: "Vehiculo eliminado" };
     } else {
-      return { ok: false, message: "No se pudo eliminar el Usuario" };
+      return { ok: false, message: "No se pudo eliminar el Vehiculo" };
     }
   }
 
