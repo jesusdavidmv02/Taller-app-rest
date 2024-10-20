@@ -8,9 +8,8 @@ export class UsuarioRepository {
         const connection: Pool = getPoolConnection();
         const querySql = `INSERT INTO usuarios (id, nombre , email , telefono) VALUES (?,?,?,?)`;
         const values = [usuario.id, usuario.nombre, usuario.email , usuario.telefono ]; 
-        const result : [ResultSetHeader, FieldPacket[]]  = await connection.query(querySql, values);
+        const result : [ResultSetHeader, FieldPacket[]] = await connection.query(querySql, values);
         return result[0];
-
     }
 
     async obtenerUsusarios(){
@@ -25,7 +24,7 @@ export class UsuarioRepository {
         const querySql = `SELECT * FROM usuarios WHERE id = ?`;
         const values = [idUsuario];
         const queryResult = await connection.query<RowDataPacket[]>(querySql, values);
-        return queryResult[0];
+        return queryResult[0] ;
     }
     
     async modificarUsuario(usuario: Usuario) {

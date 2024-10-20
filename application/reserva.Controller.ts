@@ -1,30 +1,49 @@
 import { ResultSetHeader } from "mysql2";
-import { reservaRepository } from "../repositori/reserva.Repositori";
+import { reservaRepository as ReservaRepository } from "../repositori/reserva.Repositori";
 import { Reserva } from "../Model/reserva.Model";
+import { UsuarioRepository } from "../repositori/usuario.Repositori";
+import { VehiculoRepository } from "../repositori/vehiculo.Repositori";
 
 export class reservaController {
 
-  private repository: reservaRepository;
+  private repository: ReservaRepository;
+  private reposUsuario : UsuarioRepository;
+  private reposVehiculo : VehiculoRepository;
 
   constructor() {
-    this.repository = new reservaRepository();
+    this.repository = new ReservaRepository();
+    this.reposUsuario = new UsuarioRepository();
+    this.reposVehiculo = new VehiculoRepository();
   }
 
   async agregar(payload: { id: number; usuario_id : number;  vehiculo_id :number ; fecha_reserva : Date }) {
     try {
 
-      const reserva = new Reserva({ id: payload.id,
-         usuario_id: payload.usuario_id, 
-          vehiculo_id : payload.vehiculo_id ,
-           fecha_reserva : payload.fecha_reserva});
+      const resulUser =  await this.reposUsuario.obtenerUsarioUno(payload.usuario_id);
+      const resulVehiculo = await  this.reposVehiculo.obtenerVehiculoUno(payload.vehiculo_id);
+
+      if (resulUser.length !== 1) {
+        return { ok: false, message: "El usuario no  se encuentra en la base de datos" };
+      }
+
+      if (resulVehiculo.length !== 1) {
+        return { ok: false, message: "El Vehiculo no  se encuentra en la base de datos" };
+      }
+
+      const reserva = new Reserva({
+        id: payload.id,
+        usuario_id: payload.usuario_id, 
+        vehiculo_id : payload.vehiculo_id ,
+        fecha_reserva : payload.fecha_reserva
+       });
+
       const result = await this.repository.agregarReserva(reserva);
 
-      if (result.ok == true) {
-        console.log(`reserva echa`);
+      if (result.affectedRows == 1) {
+        return { ok: true, id: result.insertId };
       } else {
-        console.log("error");
+        return { ok: false, id: result.insertId };
       }
-      return result;
     } catch (error: any) {
       console.log("Ha ocurrido un error al guardar.", error?.message);
       return error;
@@ -47,6 +66,17 @@ export class reservaController {
   async actualizar(payload: { id: number; usuario_id : number;  vehiculo_id :number ; fecha_reserva : Date }) {
     try {
 
+      const resulUser =  await this.reposUsuario.obtenerUsarioUno(payload.usuario_id);
+      const resulVehiculo = await  this.reposVehiculo.obtenerVehiculoUno(payload.vehiculo_id);
+
+      if (resulUser.length !== 1) {
+        return { ok: false, message: "El usuario no  se encuentra en la base de datos" };
+      }
+
+      if (resulVehiculo.length !== 1) {
+        return { ok: false, message: "El Vehiculo no  se encuentra en la base de datos" };
+      }
+
       const reserva = new Reserva({ 
         id: payload.id,
         usuario_id: payload.usuario_id, 
@@ -56,12 +86,12 @@ export class reservaController {
 
       const result = await this.repository.modificarReserva(reserva);
 
-      if (result.ok === true) {
-        console.log("Reserva actualizada con exito");
+      if (result.affectedRows === 1) {
+        return {ok: true , message : "Reserva actualizada con exito"}        
       } else {
-        console.log("No se pudo actualizar la reserva");
+        return {ok: false , message : "Error en la Actualizacion de la reserva"}        
       }
-      return result;
+      
     } catch (error) {
       console.log("Ha ocurrido un error actualizando");
       return error;

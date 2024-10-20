@@ -13,36 +13,31 @@ export class vehiculoController {
 
   async agregar(payload: { id: number; marca: string; modelo: string; anio: number }) {
     try {
-
       const vehiculo = new Vehiculo({
         id: payload.id,
         marca: payload.marca,
         modelo: payload.modelo,
         anio: payload.anio
-      }
-      );
-      const result = await this.repository.agregarVehiculo(vehiculo);
+      });
 
+      const result = await this.repository.agregarVehiculo(vehiculo);
       if (result.affectedRows == 1) {
         return { ok: true, id: result.insertId };
       } else {
         return { ok: false, id: result.insertId  , messaje: "Error de envio" };
       }
+
     } catch (error: any) {
       console.log("Ha ocurrido un error al guardar.", error?.message);
-      return error;
-
+      throw error;
     }
   }
 
   async obtener() {
     try {
       const resultado = await this.repository.obtenervehiculo();
-      console.log("Reservas");
-      console.log(resultado);
       return resultado;
     } catch (error) {
-      console.log("Ha ocurrido un error al consultando.");
       return error;
     }
   }
@@ -59,7 +54,7 @@ export class vehiculoController {
       if (resultado.affectedRows === 1) {
         return { ok: true, message: "Vehiculo actualizado corretamente" }
       } else {
-        return { ok: false, message: "Error  " }
+        return { ok: false, message: "Error" }
       }
     } catch (error) {
       console.log("Ha ocurrido un error actualizando");
@@ -71,15 +66,13 @@ export class vehiculoController {
     try {
       const resultado = await this.repository.obtenerVehiculoUno(id);
       if (resultado.length == 1) {
-        console.log("Vehiculo consultada");
-        console.log(resultado[0]);
+        return resultado[0];
       } else {
-        console.log("No se encontro la Vehiculo");
+        return "No se encontro la Vehiculo" ;
       }
-      return resultado;
     } catch (error) {
       console.log("Ha ocurrido un error al consultando.");
-      return error;
+      throw error;
     }
   }
 
@@ -91,8 +84,6 @@ export class vehiculoController {
       return { ok: false, message: "No se pudo eliminar el Vehiculo" };
     }
   }
-
-
 
 }
 

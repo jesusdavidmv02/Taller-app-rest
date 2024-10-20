@@ -27,10 +27,8 @@ export class usuarioController {
   async obtener() {
     try {
       const resultado = await this.repository.obtenerUsusarios();
-      console.log(resultado);
       return resultado;
     } catch (error) {
-      console.log("Ha ocurrido un error al consultando.");
       return error;
     }
   }
@@ -40,9 +38,9 @@ export class usuarioController {
       const usuario = new Usuario({ id: payload.id, nombre: payload.nombre, email: payload.email, telefono: payload.telefono });
       const resultado = await this.repository.modificarUsuario(usuario);
       if (resultado.affectedRows === 1) {
-          return {ok: true , message : "usuaio actualizado corretamente "}        
+        return {ok: true , message : "usuario actualizado corretamente "}        
       } else {
-        return {ok: false , message : "Error  "}        
+        return {ok: false , message : "Error actualizado corretamente"}        
       }
     } catch (error) {
       console.log("Ha ocurrido un error actualizando");
@@ -54,12 +52,10 @@ export class usuarioController {
     try {
       const resultado = await this.repository.obtenerUsarioUno(id);
       if (resultado.length == 1) {
-        console.log("Usuarios consultada");
-        console.log(resultado[0]);
+        return resultado[0];
       } else {
-        console.log("No se encontro la Usuario");
+        return "No se encontro la Usuario";
       }
-      return resultado;
     } catch (error) {
       console.log("Ha ocurrido un error al consultando.");
       return error;
