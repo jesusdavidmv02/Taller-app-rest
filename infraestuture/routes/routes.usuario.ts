@@ -48,7 +48,7 @@ export const RoutesUsuario = () => {
       const idStr = req.params.id;
       const id = parseInt(idStr);
       if (Number.isNaN(id)) {
-        res.status(400).send({ ok: false, message: "Error en el id enviado" });
+        res.status(400).send({ ok: false, message: "Error en el id enviado .Debe ser un número válido." });
         return;
       }
       const result = await usuarioCtrl.obtenerPorId(id);

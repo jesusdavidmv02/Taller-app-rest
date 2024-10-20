@@ -6,18 +6,6 @@ export const RoutesReserva = () => {
   const router = Express.Router();
   const reservaCtrol = new reservaController();
 
-  router.post("/reserva", (req, res) => {
-
-    const payload = req.body;
-
-    reservaCtrol.agregar(payload).then((result) => {
-      res.send(result);
-    })
-      .catch((error) => {
-        res.status(500).send(error);
-      });
-  });
-
   router.get("/reserva", (req, res) => {
     reservaCtrol.obtener().then((result) => {
       res.send(result);
@@ -26,6 +14,28 @@ export const RoutesReserva = () => {
         res.send({
           message: "Ha ocurrido un error la reserva",
         });
+      });
+  });
+
+  router.post("/reserva", (req, res) => {
+    const payload = req.body;
+    reservaCtrol.agregar(payload).then((result) => {
+      res.send(result);
+    })
+      .catch((error) => {
+        res.status(500).send(error);
+      });
+  });
+
+  router.put("/reserva", (req, res) => {
+    const payload = req.body;
+    console.log(payload);
+    reservaCtrol.actualizar(payload).then((result) => {
+      const status = result === true ? 200 : 400;
+      res.status(status).send(result);
+    })
+      .catch((error) => {
+        res.status(500).send(error);
       });
   });
 
@@ -41,25 +51,14 @@ export const RoutesReserva = () => {
       if (result) {
         res.send({ ok: true, info: result });
       } else {
-        res.status(404).send({ ok: false, message: "No se encontró el ID " });
+        res.status(404).send({ ok: false,  info: result });
       }
     } catch (error) {
       console.error("Error en el servidor:", error);
-      res.status(500).send({ ok: false, message: "Ocurrió un error en el servidor. Inténtalo más tarde." });
+      res.status(500).send(error);
     }
   });
 
-  router.put("/reserva", (req, res) => {
-    const payload = req.body;
-    console.log(payload);
-    reservaCtrol.actualizar(payload).then((result) => {
-      const status = result === true ? 200 : 400;
-      res.status(status).send(result);
-    })
-      .catch((error) => {
-        res.status(500).send(error);
-      });
-  });
 
   router.delete("/reserva/:id", async (req, res) => {
     try {

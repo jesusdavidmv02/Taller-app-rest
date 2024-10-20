@@ -68,7 +68,7 @@ export class vehiculoController {
       if (resultado.length == 1) {
         return resultado[0];
       } else {
-        return "No se encontro la Vehiculo" ;
+        return "El ID Vehiculo : no se encuentra en la base de datos" ;
       }
     } catch (error) {
       console.log("Ha ocurrido un error al consultando.");
@@ -79,9 +79,9 @@ export class vehiculoController {
   async eliminar(id: number) {
     const resultado: ResultSetHeader = await this.repository.eliminarVehiculo(id);
     if (resultado.affectedRows == 1) {
-      return { ok: true, message: "Vehiculo eliminado" };
+      return { ok: true, message: "Vehiculo eliminado Corretamente" };
     } else {
-      return { ok: false, message: "No se pudo eliminar el Vehiculo" };
+      return { ok: false, message: "No se pudo eliminar el Vehiculo // No se encuentra en la base de datos" };
     }
   }
 

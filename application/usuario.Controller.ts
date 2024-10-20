@@ -54,7 +54,7 @@ export class usuarioController {
       if (resultado.length == 1) {
         return resultado[0];
       } else {
-        return "No se encontro la Usuario";
+        return "El ID del Usuario : no se encuentra en la base de datos";
       }
     } catch (error) {
       console.log("Ha ocurrido un error al consultando.");
@@ -65,9 +65,9 @@ export class usuarioController {
   async eliminar(id: number) {
     const resultado: ResultSetHeader = await this.repository.eliminarUsuario(id);
     if (resultado.affectedRows == 1) {
-      return { ok: true, message: "Usuario eliminado" };
+      return { ok: true, message: "Usuario eliminado Corretamente" };
     } else {
-      return { ok: false, message: "No se pudo eliminar el Usuario" };
+      return { ok: false, message: "No se pudo eliminar el Usuario // No se encuentra en la base de datos" };
     }
   }
 
