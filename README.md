@@ -12,7 +12,7 @@ Este proyecto simula un sistema para gestionar las reservas de vehículos en un 
 <img  height = "50" src  ="https://img.shields.io/badge/MySQL2-MySQL?logo=mysql&logoColor=white&labelColor=black&color=white" />
 <img height ="50" src ="https://img.shields.io/badge/Express-Express?logo=express&logoColor=white&logoSize=height%3D50&labelColor=black&color=white"/>
 <img height ="50" src="https://img.shields.io/badge/npm-red?logo=npm&logoColor=white" />
-<img height= "50" src = "https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white />
+<img height= "50" src = "https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
 
 </p>
 
@@ -30,13 +30,15 @@ Este proyecto simula un sistema para gestionar las reservas de vehículos en un 
 
   #### Instalación
 ```
-	1. npm i 
+1. npm i 
 ```
+
 ```
-	2. Cree la base de datos con el DDL del backup. 
+2. Cree la base de datos con el DDL del backup. 
 ```
+
 ```
-	3. Establezca la conexión a la base de datos con sus credenciales de MySQL.
+3. Establezca la conexión a la base de datos con sus credenciales de MySQL.
 ```
 
 
